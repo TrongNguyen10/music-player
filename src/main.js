@@ -279,9 +279,9 @@ const app = {
             themeText.textContent = themeIcon.classList.contains('fa-sun') ? 'Light mode' : 'Dark mode'
         }
         // Load volume
-        audio.volume = this.config.volume / 100 || 100
-        volumeRange.value = this.config.volume
-        volumeOutput.textContent = this.config.volume
+        audio.volume = this.config.volume / 100 || 1
+        volumeRange.value = this.config.volume || 100
+        volumeOutput.textContent = this.config.volume || '100'
         this.handleLikedList(this.config.likedListIndex)
     },
     nextsong: function () {
