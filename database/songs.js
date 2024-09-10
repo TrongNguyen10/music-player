@@ -48,6 +48,27 @@ export default {
             path: "assets/music/LanHenHoDauTien.mp3",
             image:
                 "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_jpeg/cover/7/e/9/4/7e94b95743998a108ff33beed5bae5c3.jpg"
+        },
+        {
+            name: "Lệ Lưu Ly",
+            singer: "Vũ Phụng Tiên & DT",
+            path: "assets/music/LeLuuLy.mp3",
+            image:
+                "https://photo-resize-zmp3.zmdcdn.me/w94_r1x1_jpeg/cover/6/9/3/f/693f8f516bfaa717ef4043f11edfdde2.jpg"
+        },
+        {
+            name: "Mang Chủng / 芒种",
+            singer: "Âm Khuyết Thi Thính",
+            path: "assets/music/MangChung.mp3",
+            image:
+                "https://avatar-ex-swe.nixcdn.com/song/2019/08/05/1/9/9/6/1565016156395_500.jpg"
+        },
+        {
+            name: "Đừng làm trái tim anh đau",
+            singer: "Sơn Tùng M-TP",
+            path: "assets/music/DungLamTraiTimAnhDau.m4a",
+            image:
+                "https://i.scdn.co/image/ab67616d00001e02a1bc26cdd8eecd89da3adc39"
         }
     ]
 }
