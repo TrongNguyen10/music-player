@@ -1,0 +1,378 @@
+:root {
+  --primary-color-1: #ec1f55;
+  --primary-color: #FFC94A;
+  --text-color: #333;
+  --dark-color: #180161;
+  --dark-color-1: #03346E;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.player {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.player .icon-pause {
+  display: none;
+}
+
+.player.playing .icon-pause {
+  display: inline-block;
+}
+
+.player.playing .icon-play {
+  display: none;
+}
+
+.dashboard {
+  padding: 16px 16px 14px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 480px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.btn-volume {
+  position: relative;
+}
+
+.btn-volume:hover .volume-wrap {
+  display: block;
+}
+
+.volume-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  display: none;
+}
+
+.volume-range {
+  accent-color: var(--primary-color);
+  height: 6em;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  vertical-align: bottom;
+}
+
+/* icon css */
+.player i:not(.icon-pause, .icon-play, .theme-icon) {
+  padding: 15px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.player i:not(.icon-pause, .icon-play, .theme-icon):hover {
+  background-color: #f3f3f3;
+}
+
+/* HEADER */
+
+.header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+header h4 {
+  color: var(--primary-color);
+  font-size: 12px;
+}
+
+header h2 {
+  color: var(--text-color);
+  font-size: 20px;
+}
+
+/* Options */
+.option {
+  position: relative;
+}
+
+.option-list {
+  position: absolute;
+  background-color: #fff;
+  width: 140px;
+  top: 100%;
+  right: -32%;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  display: none;
+}
+
+.option-item {
+  font-size: 14px;
+  padding: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.option-item:hover {
+  background-color: #f3f3f3;
+}
+
+.theme-icon {
+  margin-left: 1em;
+}
+
+/* Container and Favorite songs */
+.favorite_songs-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.empty-list {
+  display: block;
+  color: rgb(188, 188, 188);
+  margin: auto;
+  text-align: center;
+}
+
+.favorite_songs {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  background-color: white;
+  width: 480px;
+  height: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 5px;
+}
+
+.favorite_songs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.favorite_songs-header h4 {
+  font-weight: 500;
+}
+
+.favorite_songs-close {
+  padding: 15px 20px;
+  cursor: pointer;
+}
+
+.favorite_songs-close:hover {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+/* CD */
+.cd {
+  display: flex;
+  margin: auto;
+  width: 200px;
+}
+
+.cd-thumb {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 50%;
+  background-color: #333;
+  background-size: cover;
+  margin: auto;
+}
+
+/* CONTROL */
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0 8px 0;
+}
+
+.control .btn {
+  color: #666;
+  /* padding: 18px; */
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.control .btn.active {
+  color: var(--primary-color);
+}
+
+.control .btn-toggle-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+}
+
+.progress {
+  accent-color: var(--primary-color);
+  width: 100%;
+  height: 6px;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+/* PLAYLIST */
+.playlist {
+  margin-top: 395px;
+  padding: 12px;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.song.active {
+  background-color: var(--primary-color);
+}
+
+.song:active {
+  opacity: 0.8;
+}
+
+.song.active .favorite,
+.song.active .author,
+.song.active .title {
+  /* color: #fff; */
+}
+
+.song .thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-size: cover;
+  margin: 0 8px;
+}
+
+.song .body {
+  flex: 1;
+  padding: 0 16px;
+}
+
+.song .title {
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.song .author {
+  font-size: 12px;
+  color: #999;
+}
+
+.song .favorite {
+  padding: 16px 8px;
+  color: #999;
+  font-size: 18px;
+}
+
+.liked i {
+  color: var(--primary-color-1);
+}
+
+/* Dark mode theme */
+.dark {
+  background-color: #03003f;
+}
+.dark .dashboard,
+.dark .player {
+  background-color: var(--dark-color);
+  color: var(--primary-color);
+}
+
+.dark .player i:not(.icon-pause, .icon-play, .favorite i) {
+  color: var(--primary-color);
+}
+
+.dark .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
+  background-color: #999;
+}
+
+.dark .dashboard {
+  border: none;
+}
+
+.dark header h2 {
+  color: #EEDF7A;
+}
+
+.dark .song {
+  background-color: var(--dark-color-1);
+  color: var(--primary-color);
+}
+
+.dark .song .favorite,
+.dark .song .author,
+.dark .song .title {
+  color: var(--primary-color);
+}
+
+.dark .song.active .favorite,
+.dark .song.active .author,
+.dark .song.active .title {
+  color: var(--dark-color-1);
+}
+
+.dark .song.active {
+  background-color: var(--primary-color);
+}
+
+.dark .control .btn.active i {
+  color: var(--primary-color-1);
+}
+
+.dark .option-list {
+  background-color: var(--dark-color-1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark .favorite_songs {
+  background-color: var(--dark-color-1);
+}
+.dark .favorite_songs-close,
+.dark .favorite_songs-header {
+  color: var(--primary-color);
+}
