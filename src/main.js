@@ -282,7 +282,7 @@ const app = {
         audio.volume = this.config.volume / 100 || 1
         volumeRange.value = this.config.volume || 100
         volumeOutput.textContent = this.config.volume || '100'
-	if (this.config.likedListIndex.length > 0){
+	if (this.config.likedListIndex.length){
             this.handleLikedList(this.config.likedListIndex)	
 	}    
     },
