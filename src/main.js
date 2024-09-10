@@ -42,10 +42,10 @@ const app = {
     isplaying: false,
     isRandom: false,
     isRepeat: false,
-    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
+    config: JSON.parse(sessionStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     setConfig: function (key, value) {
         this.config[key] = value
-        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
+        sessionStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
     },
     songs: data.songs,
     render: function () {
@@ -259,7 +259,7 @@ const app = {
             }
         });
 
-        // Lưu bài hát hiện tại vào localStorage
+        // Lưu bài hát hiện tại vào sessionStorage
         this.setConfig('currentSongIndex', this.currentIndex)
         // scroll to current song
         this.scrollToActiveSong()
