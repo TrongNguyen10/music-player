@@ -42,10 +42,10 @@ const app = {
     isplaying: false,
     isRandom: false,
     isRepeat: false,
-    config: JSON.parse(sessionStorage.getItem(PLAYER_STORAGE_KEY)) || {},
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     setConfig: function (key, value) {
         this.config[key] = value
-        sessionStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
     },
     songs: data.songs,
     render: function () {
@@ -205,7 +205,10 @@ const app = {
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.parentNode.parentNode
                 _this.handleLikedList([favoriteSong.dataset.index])
-                _this.setConfig('likedListIndex', likedList)
+		// Nếu likedList có chứa phần tử thì mới setconfig 
+		if(likedList.length){
+                    _this.setConfig('likedListIndex', likedList)	
+		}    
             }
         }
     },
@@ -259,7 +262,7 @@ const app = {
             }
         });
 
-        // Lưu bài hát hiện tại vào sessionStorage
+        // Lưu bài hát hiện tại vào localStorage
         this.setConfig('currentSongIndex', this.currentIndex)
         // scroll to current song
         this.scrollToActiveSong()
@@ -282,7 +285,7 @@ const app = {
         audio.volume = this.config.volume / 100 || 1
         volumeRange.value = this.config.volume || 100
         volumeOutput.textContent = this.config.volume || '100'
-	if (this.config.likedListIndex.length){
+	if ('likedListIndex' in this.config){
             this.handleLikedList(this.config.likedListIndex)	
 	}    
     },
