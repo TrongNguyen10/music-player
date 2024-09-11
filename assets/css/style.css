@@ -53,9 +53,9 @@ html {
   position: relative;
 }
 
-.btn-volume:hover .volume-wrap {
+/* .btn-volume:hover .volume-wrap {
   display: block;
-}
+} */
 
 .volume-wrap {
   position: absolute;
@@ -80,9 +80,9 @@ html {
   cursor: pointer;
 }
 
-.player i:not(.icon-pause, .icon-play, .theme-icon):hover {
+/* .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
   background-color: #f3f3f3;
-}
+} */
 
 /* HEADER */
 
@@ -164,11 +164,10 @@ header h2 {
   margin: auto;
   background-color: white;
   width: 480px;
-  height: 300px;
+  min-height: 300px;
   max-height: 400px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
   border-radius: 5px;
+  overflow-y: auto;
 }
 
 .favorite_songs-header {
@@ -327,9 +326,9 @@ header h2 {
   color: var(--primary-color);
 }
 
-.dark .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
+/* .dark .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
   background-color: #999;
-}
+} */
 
 .dark .dashboard {
   border: none;
@@ -375,4 +374,10 @@ header h2 {
 .dark .favorite_songs-close,
 .dark .favorite_songs-header {
   color: var(--primary-color);
+}
+
+@media (max-width: 739px) {
+  .favorite_songs {
+    width: 100%;
+  }
 }

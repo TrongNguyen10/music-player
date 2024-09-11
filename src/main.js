@@ -20,6 +20,9 @@ const optionBtn = $('.option')
 const optionList = $('.option-list')
 const themeText = $('.theme-btn span')
 const themeIcon = $('.theme-icon')
+// Volume
+const volumeBtn = $('.btn-volume')
+const volumeWrap = $('.volume-wrap')
 const volumeRange = $('.volume-range')
 const volumeOutput = $('.volume-output')
 // favorite box
@@ -37,6 +40,7 @@ const cdThumbAnimate = cdThumb.animate([
 })
 cdThumbAnimate.pause()
 const likedList = []
+let randomFilter = []
 const app = {
     currentIndex: 0,
     isplaying: false,
@@ -82,11 +86,14 @@ const app = {
             if (!e.target.closest('.option')) {
                 optionList.style.display = null
             }
+            if (!e.target.closest('.btn-volume')) {
+                volumeWrap.style.display = null
+            }
         }
 
         // Show option list 
         optionBtn.onclick = function (e) {
-            optionList.style.display = Boolean(!optionList.style.display) ? 'block' : null
+            optionList.style.display = !Boolean(optionList.style.display) ? 'block' : null
         }
         optionList.onclick = function (e) {
             // Chuyển mode sáng tối
@@ -113,14 +120,19 @@ const app = {
             }
             emptyList.style.display = favoriteList.childElementCount > 0 ? 'none' : null
         }
-
+        // Bật tắt volume
+        volumeBtn.onclick = function () {
+            volumeWrap.style.display = !Boolean(volumeWrap.style.display) ? 'block' : null
+        }
+        volumeWrap.onclick = function (e) {
+            e.stopPropagation()
+        }
         // Drag volume range
         volumeRange.oninput = function (e) {
             audio.volume = e.target.value / 100
             volumeOutput.textContent = e.target.value
             _this.setConfig('volume', e.target.value)
         }
-
         // Xử lý scale cd
         document.onscroll = function () {
             const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -205,10 +217,10 @@ const app = {
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.parentNode.parentNode
                 _this.handleLikedList([favoriteSong.dataset.index])
-		// Nếu likedList có chứa phần tử thì mới setconfig 
-		if(likedList.length){
-                    _this.setConfig('likedListIndex', likedList)	
-		}    
+                // Nếu likedList có chứa phần tử thì mới setconfig 
+                if (likedList.length) {
+                    _this.setConfig('likedListIndex', likedList)
+                }
             }
         }
     },
@@ -268,13 +280,13 @@ const app = {
         this.scrollToActiveSong()
     },
     loadConfig: function () {
-        this.isRandom = this.config.isRandom
-        this.isRepeat = this.config.isRepeat
+        this.isRandom = this.config.isRandom || false
+        this.isRepeat = this.config.isRepeat || false
         randomBtn.classList.toggle('active', this.isRandom)
         repeatBtn.classList.toggle('active', this.isRepeat)
-        this.currentIndex = this.config.currentSongIndex
-        progress.value = this.config.songProgressValue
-        audio.currentTime = this.config.songCurrentTime
+        this.currentIndex = this.config.currentSongIndex || 0
+        progress.value = this.config.songProgressValue || 0
+        audio.currentTime = this.config.songCurrentTime || 0
         // Load theme
         if (this.config.classDark) {
             themeIcon.classList.toggle('fa-sun')
@@ -285,9 +297,10 @@ const app = {
         audio.volume = this.config.volume / 100 || 1
         volumeRange.value = this.config.volume || 100
         volumeOutput.textContent = this.config.volume || '100'
-	if ('likedListIndex' in this.config){
-            this.handleLikedList(this.config.likedListIndex)	
-	}    
+        // Load likedList
+        if ('likedListIndex' in this.config) {
+            this.handleLikedList(this.config.likedListIndex)
+        }
     },
     nextsong: function () {
         this.currentIndex++
@@ -303,12 +316,23 @@ const app = {
     },
     playRandomSong: function () {
         let newIndex = this.currentIndex
+        
+        if(randomFilter.length == 0){
+            randomFilter.push(this.currentIndex)
+        }else if(randomFilter.length == this.songs.length){
+            randomFilter.length = 0
+            randomFilter.push(this.currentIndex)
+        }
+
         do {
             newIndex = Math.floor(Math.random() * this.songs.length)
-        } while (newIndex == this.currentIndex)
+        } while (randomFilter.includes(newIndex))
+
         this.currentIndex = newIndex
         this.loadCurrentSong()
         audio.play()
+
+        randomFilter.push(this.currentIndex)
     },
     start: function () {
         this.defineProperties()
