@@ -217,10 +217,7 @@ const app = {
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.parentNode.parentNode
                 _this.handleLikedList([favoriteSong.dataset.index])
-                // Nếu likedList có chứa phần tử thì mới setconfig 
-                if (likedList.length) {
-                    _this.setConfig('likedListIndex', likedList)
-                }
+                _this.setConfig('likedListIndex', likedList)
             }
         }
     },
@@ -298,7 +295,7 @@ const app = {
         volumeRange.value = this.config.volume || 100
         volumeOutput.textContent = this.config.volume || '100'
         // Load likedList
-        if ('likedListIndex' in this.config) {
+        if ('likedListIndex' in this.config && this.config.likedListIndex.length) {
             this.handleLikedList(this.config.likedListIndex)
         }
     },

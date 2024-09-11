@@ -166,7 +166,7 @@ header h2 {
   width: 480px;
   min-height: 300px;
   max-height: 400px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   overflow-y: auto;
 }
 
@@ -187,7 +187,7 @@ header h2 {
 }
 
 .favorite_songs-close:hover {
-  background-color: #ff0000;
+  background-color: #e20000;
   color: #fff;
 }
 
