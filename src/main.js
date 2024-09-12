@@ -216,13 +216,15 @@ const app = {
                 // Xử lý khi thả tim
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.parentNode.parentNode
-                _this.handleLikedList([favoriteSong.dataset.index])
+                _this.handleLikedList([favoriteSong.dataset.index], favoriteSong.parentNode)
                 _this.setConfig('likedListIndex', likedList)
             }
         }
     },
     // Xử lý danh sách bài hát yêu thích
-    handleLikedList: function (favSongIndex) {
+    handleLikedList: function (favSongIndex, unlikedParentNode) {
+        // Duyệt mảng vị trí các bài hát đã bấm tim, nếu like thì thêm vào favorite box
+        // bỏ like thì xóa khỏi favorite box, áp dụng cho cả loadconfig 
         favSongIndex.forEach(function (index) {
             let favoriteSong = $(`.song[data-index="${index}"]`)
             favoriteSong.classList.toggle('liked')
@@ -235,8 +237,9 @@ const app = {
                 favoriteList.removeChild(removeSong)
                 likedList.splice(likedList.indexOf(index), 1)
             }
-            // Xử lý khi bỏ tim từ favorite box - bỏ tim bài hát ở playlist
-            if (false) {
+            // Xử lý khi bỏ tim từ favorite box -> bỏ tim bài hát ở playlist
+            // khi bỏ tim từ favorite box thì parentNode = undefined
+            if (!unlikedParentNode) {
                 favoriteSong = $(`.song[data-index="${index}"]`)
                 favoriteSong.querySelector('i').classList.remove('fas')
                 favoriteSong.classList.remove('liked')
@@ -296,7 +299,7 @@ const app = {
         volumeOutput.textContent = this.config.volume || '100'
         // Load likedList
         if ('likedListIndex' in this.config && this.config.likedListIndex.length) {
-            this.handleLikedList(this.config.likedListIndex)
+            this.handleLikedList(this.config.likedListIndex, true)
         }
     },
     nextsong: function () {
