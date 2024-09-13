@@ -84,8 +84,53 @@ html {
   background-color: #f3f3f3;
 } */
 
-/* HEADER */
+/* SEARCH  */
+.search-box{
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
+.search-box > i {
+  position: absolute;
+  right: 3%;
+}
+
+.search-bar {
+  background-color: #ebebeb;
+  width: 100%;
+  padding: 10px 18px;
+  border-radius: 18px;
+  border: none;
+  outline: none;
+}
+.search-songs {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  min-height: 100px;
+  max-height: 250px;
+  background-color: #ebebeb;
+  z-index: 1;
+  border-bottom-right-radius: 18px;
+  border-bottom-left-radius: 18px;
+  display: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.search-songs .song:not(.active) {
+  background-color: transparent;
+}
+.search-songs .song{
+  height: 50px;
+  background-color: transparent;
+  box-shadow: none;
+}
+.search-songs .title {
+  font-size: 14px !important; 
+}
+/* HEADER */
 .header-wrap {
   display: flex;
   justify-content: space-between;
@@ -250,7 +295,7 @@ header h2 {
 
 /* PLAYLIST */
 .playlist {
-  margin-top: 395px;
+  margin-top: 441px;
   padding: 12px;
 }
 
@@ -316,6 +361,7 @@ header h2 {
 .dark {
   background-color: #03003f;
 }
+
 .dark .dashboard,
 .dark .player {
   background-color: var(--dark-color);
@@ -371,9 +417,18 @@ header h2 {
 .dark .favorite_songs {
   background-color: var(--dark-color-1);
 }
+
 .dark .favorite_songs-close,
 .dark .favorite_songs-header {
   color: var(--primary-color);
+}
+.dark .search-bar,
+.dark .search-songs {
+  background-color: #03003f;
+  color: #ebebeb;
+}
+.dark .search-bar::placeholder {
+  color: #999;
 }
 
 @media (max-width: 739px) {

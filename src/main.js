@@ -29,6 +29,10 @@ const volumeOutput = $('.volume-output')
 const favoriteModal = $('.favorite_songs-modal')
 const favoriteList = $('.favorite_songs-list')
 const emptyList = $('.empty-list')
+// Search
+const searchBox = $('.search-box')
+const searchInput = $('.search-bar')
+const searchSongs = $('.search-songs')
 // Xử lý cd-thumb quay và dừng
 const cdThumbAnimate = cdThumb.animate([
     {
@@ -41,6 +45,7 @@ const cdThumbAnimate = cdThumb.animate([
 cdThumbAnimate.pause()
 const likedList = []
 let randomFilter = []
+let songsList
 const app = {
     currentIndex: 0,
     isplaying: false,
@@ -52,9 +57,10 @@ const app = {
         localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
     },
     songs: data.songs,
-    render: function () {
-        const htmls = this.songs.map((song, index) => {
+    render: function (songsArray, renderElm) {
+        const htmls = songsArray.map((song, index) => {
             return `
+                <div class= "song-node">
 					<div class="song" data-index="${index}">
 						<div class="thumb"
 							style="background-image: url('${song.image}')">
@@ -67,9 +73,11 @@ const app = {
 							<i class="far fa-heart"></i>
 						</div>
 					</div>
+                </div>    
 				`
         })
-        playlist.innerHTML = htmls.join('')
+        renderElm.innerHTML = htmls.join('')
+        // console.log(typeof [...$$('.song')][0].innerText)
     },
     defineProperties: function () {
         Object.defineProperty(this, 'currentSong', {
@@ -78,9 +86,26 @@ const app = {
             }
         })
     },
+    // Chuẩn hóa chuỗi sang unicode format
+    removeAccents: function (str) {
+        return str.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    },
     handleEvents: function () {
         const _this = this
         const cdWidth = cd.offsetWidth
+        // nhấn space để phát/dừng bài hát
+        document.onkeydown = function (e) {
+            e = e || window.event;
+            // use e.keyCode
+            if(e.code === "Space" && e.target === document.body){
+                e.preventDefault()
+                if (_this.isplaying) {
+                    audio.pause()
+                } else audio.play()
+            }
+        };
         // Click outside then close the opening box
         document.onclick = function (e) {
             if (!e.target.closest('.option')) {
@@ -89,6 +114,38 @@ const app = {
             if (!e.target.closest('.btn-volume')) {
                 volumeWrap.style.display = null
             }
+            if (!e.target.closest('.search-box')) {
+                searchSongs.style.display = null
+                searchInput.setAttribute('style', 'border-bottom-right-radius: null; border-bottom-left-radius: null')
+            }
+        }
+
+        //Searching  
+        searchBox.onclick = function () {
+            searchSongs.style.display = 'block'
+            searchInput.setAttribute('style', 'border-bottom-right-radius: 0; border-bottom-left-radius: 0')
+            songsList = $$('.song-node')
+        }
+        searchInput.oninput = function () {
+            let searchValue = searchInput.value
+            if (!searchValue) {
+                searchSongs.innerHTML = ''
+                return
+            }
+            let searchResult = [] 
+            songsList.forEach(song => {
+                let copySong = song.cloneNode(true)
+                let songInfo = _this.removeAccents(copySong.innerText).toUpperCase()
+                searchValue = _this.removeAccents(searchValue).toUpperCase()
+                if(songInfo.includes(searchValue)) {
+                    searchResult.push(copySong.innerHTML)
+                }
+            })
+            // console.log(searchResult)
+            searchSongs.innerHTML = searchResult.join('')
+        }
+        searchSongs.onclick = (e) => {
+            playlist.onclick(e)
         }
 
         // Show option list 
@@ -222,13 +279,16 @@ const app = {
         }
     },
     // Xử lý danh sách bài hát yêu thích
-    handleLikedList: function (favSongIndex, unlikedParentNode) {
+    handleLikedList: function (favSongsIndex, unlikedParentNode) {
         // Duyệt mảng vị trí các bài hát đã bấm tim, nếu like thì thêm vào favorite box
         // bỏ like thì xóa khỏi favorite box, áp dụng cho cả loadconfig 
-        favSongIndex.forEach(function (index) {
-            let favoriteSong = $(`.song[data-index="${index}"]`)
-            favoriteSong.classList.toggle('liked')
-            favoriteSong.querySelector('i').classList.toggle('fas')
+        favSongsIndex.forEach(function (index) {
+            let favoriteSong = $$(`.song[data-index="${index}"]`)
+            favoriteSong.forEach(song => {
+                song.classList.toggle('liked')
+                song.querySelector('i').classList.toggle('fas')
+            })
+            favoriteSong = favoriteSong[0]
             if (favoriteSong.classList.contains('liked')) {
                 favoriteList.appendChild(favoriteSong.cloneNode(true))
                 likedList.push(index)
@@ -316,10 +376,10 @@ const app = {
     },
     playRandomSong: function () {
         let newIndex = this.currentIndex
-        
-        if(randomFilter.length == 0){
+
+        if (randomFilter.length == 0) {
             randomFilter.push(this.currentIndex)
-        }else if(randomFilter.length == this.songs.length){
+        } else if (randomFilter.length == this.songs.length) {
             randomFilter.length = 0
             randomFilter.push(this.currentIndex)
         }
@@ -339,7 +399,7 @@ const app = {
         // xử lý các sự kiện (Dom Events)
         this.handleEvents()
         // render bài hát vào playlist
-        this.render()
+        this.render(this.songs, playlist)
         // Gán cấu hình đã lưu từ config vào Object
         this.loadConfig()
         // Tải thông tin bài hát đầu tiên vào UI khi chạy
