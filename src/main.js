@@ -284,11 +284,13 @@ const app = {
         // bỏ like thì xóa khỏi favorite box, áp dụng cho cả loadconfig 
         favSongsIndex.forEach(function (index) {
             let favoriteSong = $$(`.song[data-index="${index}"]`)
+            if (!favoriteSong.length) return
             favoriteSong.forEach(song => {
                 song.classList.toggle('liked')
                 song.querySelector('i').classList.toggle('fas')
             })
             favoriteSong = favoriteSong[0]
+            console.log(favoriteSong)
             if (favoriteSong.classList.contains('liked')) {
                 favoriteList.appendChild(favoriteSong.cloneNode(true))
                 likedList.push(index)
@@ -310,7 +312,7 @@ const app = {
     // Focus, cuộn tới bài hát đang phát
     scrollToActiveSong: function () {
         setTimeout(() => {
-            $('.song.active').scrollIntoView({
+            $('.playlist .song.active').scrollIntoView({
                 behavior: "smooth",
                 block: "end",
                 inline: "nearest",
@@ -375,6 +377,7 @@ const app = {
         audio.play()
     },
     playRandomSong: function () {
+        if(this.songs.length < 2) return
         let newIndex = this.currentIndex
 
         if (randomFilter.length == 0) {
