@@ -154,7 +154,6 @@ const app = {
                     searchResult.push(copySong.innerHTML)
                 }
             })
-            // console.log(searchResult)
             searchSongs.innerHTML = searchResult.join('')
         }
         searchSongs.onclick = (e) => {
@@ -316,7 +315,6 @@ const app = {
                 song.querySelector('i').classList.toggle('fas')
             })
             favoriteSong = favoriteSong[0]
-            console.log(favoriteSong)
             if (favoriteSong.classList.contains('liked')) {
                 favoriteList.appendChild(favoriteSong.cloneNode(true))
                 likedList.push(index)
