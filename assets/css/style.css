@@ -20,7 +20,7 @@ html {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-
+/* #region Player */
 .player {
   position: relative;
   max-width: 480px;
@@ -38,6 +38,17 @@ html {
 .player.playing .icon-play {
   display: none;
 }
+/* icon css */
+.player i:not(.icon-pause, .icon-play, .theme-icon) {
+  padding: 15px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
+  background-color: #f3f3f3;
+} */
+
+/* #endregion Player */
 
 .dashboard {
   padding: 16px 16px 14px;
@@ -49,42 +60,7 @@ html {
   border-bottom: 1px solid #ebebeb;
 }
 
-.btn-volume {
-  position: relative;
-}
-
-/* .btn-volume:hover .volume-wrap {
-  display: block;
-} */
-
-.volume-wrap {
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  display: none;
-}
-
-.volume-range {
-  accent-color: var(--primary-color);
-  height: 6em;
-  writing-mode: vertical-lr;
-  direction: rtl;
-  vertical-align: bottom;
-}
-
-/* icon css */
-.player i:not(.icon-pause, .icon-play, .theme-icon) {
-  padding: 15px 15px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* .player i:not(.icon-pause, .icon-play, .theme-icon):hover {
-  background-color: #f3f3f3;
-} */
-
-/* SEARCH  */
+/* #region SEARCH  */
 .search-box{
   position: relative;
   display: flex;
@@ -128,7 +104,35 @@ html {
 .search-songs .title {
   font-size: 14px !important; 
 }
-/* HEADER */
+/* #endregion SEARCH  */
+
+/* #region Volume */
+.btn-volume {
+  position: relative;
+}
+
+/* .btn-volume:hover .volume-wrap {
+  display: block;
+} */
+
+.volume-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  display: none;
+}
+
+.volume-range {
+  accent-color: var(--primary-color);
+  height: 6em;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  vertical-align: bottom;
+}
+/* #endregion Volume */
+
+/* #region HEADER */
 .header-wrap {
   display: flex;
   justify-content: space-between;
@@ -149,8 +153,9 @@ header h2 {
   color: var(--text-color);
   font-size: 20px;
 }
+/* #endregion HEADER */
 
-/* Options */
+/* #region Options */
 .option {
   position: relative;
 }
@@ -182,8 +187,9 @@ header h2 {
 .theme-icon {
   margin-left: 1em;
 }
+/* #endregion Options */
 
-/* Container and Favorite songs */
+/* #region Favorite songs */
 .favorite_songs-modal {
   position: fixed;
   top: 0;
@@ -234,8 +240,9 @@ header h2 {
   background-color: #e20000;
   color: #fff;
 }
+/* #endregion Favorite songs */
 
-/* CD */
+/* #region CD */
 .cd {
   display: flex;
   margin: auto;
@@ -250,8 +257,9 @@ header h2 {
   background-size: cover;
   margin: auto;
 }
+/* #endregion CD */
 
-/* CONTROL */
+/* #region CONTROL */
 .control {
   display: flex;
   align-items: center;
@@ -281,7 +289,9 @@ header h2 {
   justify-content: center;
   background-color: var(--primary-color);
 }
+/* #endregion CONTROL */
 
+/* #region PROGRESS */
 .progress {
   accent-color: var(--primary-color);
   width: 100%;
@@ -291,8 +301,9 @@ header h2 {
   transition: opacity 0.2s;
   cursor: pointer;
 }
+/* #endregion PROGRESS */
 
-/* PLAYLIST */
+/* #region PLAYLIST */
 .playlist {
   margin-top: 441px;
   padding: 12px;
@@ -350,8 +361,9 @@ header h2 {
 .liked i {
   color: var(--primary-color-1);
 }
+/* #endregion PLAYLIST */
 
-/* Dark mode theme */
+/* #region Dark mode theme */
 .dark {
   background-color: #03003f;
 }
@@ -370,8 +382,35 @@ header h2 {
   border: none;
 }
 
+.dark .search-bar,
+.dark .search-songs {
+  background-color: #03003f;
+  color: #ebebeb;
+}
+.dark .search-bar::placeholder {
+  color: #999;
+}
+
 .dark header h2 {
   color: #EEDF7A;
+}
+
+.dark .option-list {
+  background-color: var(--dark-color-1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dark .control .btn.active i {
+  color: var(--primary-color-1);
+}
+
+.dark .favorite_songs {
+  background-color: var(--dark-color-1);
+}
+
+.dark .favorite_songs-close,
+.dark .favorite_songs-header {
+  color: var(--primary-color);
 }
 
 .dark .song {
@@ -389,32 +428,7 @@ header h2 {
 .dark .song.active .title {
   color: var(--primary-color-1);
 }
-
-.dark .control .btn.active i {
-  color: var(--primary-color-1);
-}
-
-.dark .option-list {
-  background-color: var(--dark-color-1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.dark .favorite_songs {
-  background-color: var(--dark-color-1);
-}
-
-.dark .favorite_songs-close,
-.dark .favorite_songs-header {
-  color: var(--primary-color);
-}
-.dark .search-bar,
-.dark .search-songs {
-  background-color: #03003f;
-  color: #ebebeb;
-}
-.dark .search-bar::placeholder {
-  color: #999;
-}
+/* #endregion Dark mode theme */
 
 @media (max-width: 739px) {
   .favorite_songs {

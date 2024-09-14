@@ -43,8 +43,11 @@ const cdThumbAnimate = cdThumb.animate([
     iterations: Infinity
 })
 cdThumbAnimate.pause()
-const likedList = []
+// Mảng chứa index bài hát được thả tim
+let likedList = []
+// Mảng chứa index bài hát đã chạy random
 let randomFilter = []
+// Biến lưu query tất cả bài hát ở playlist để thực hiện searching
 let songsList
 const app = {
     currentIndex: 0,
@@ -77,7 +80,6 @@ const app = {
 				`
         })
         renderElm.innerHTML = htmls.join('')
-        // console.log(typeof [...$$('.song')][0].innerText)
     },
     defineProperties: function () {
         Object.defineProperty(this, 'currentSong', {
@@ -95,6 +97,7 @@ const app = {
     handleEvents: function () {
         const _this = this
         const cdWidth = cd.offsetWidth
+
         // nhấn space để phát/dừng bài hát
         document.onkeydown = function (e) {
             e = e || window.event;
@@ -106,6 +109,7 @@ const app = {
                 } else audio.play()
             }
         };
+
         // Click outside then close the opening box
         document.onclick = function (e) {
             if (!e.target.closest('.option')) {
@@ -120,10 +124,19 @@ const app = {
             }
         }
 
-        //Searching  
+        // Xử lý scale cd
+        document.onscroll = function () {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop
+            const newCdWidth = cdWidth - scrollTop
+            cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
+            cd.style.opacity = newCdWidth / cdWidth
+        }
+
+        //#region Searching  
         searchBox.onclick = function () {
             searchSongs.style.display = 'block'
             searchInput.setAttribute('style', 'border-bottom-right-radius: 0; border-bottom-left-radius: 0')
+            // Biến lưu query tất cả bài hát ở playlist để thực hiện search
             songsList = $$('.song-node')
         }
         searchInput.oninput = function () {
@@ -147,7 +160,25 @@ const app = {
         searchSongs.onclick = (e) => {
             playlist.onclick(e)
         }
+        //#endregion Searching
 
+        // #region Volume
+        // Bật tắt volume
+        volumeBtn.onclick = function () {
+            volumeWrap.style.display = !Boolean(volumeWrap.style.display) ? 'block' : null
+        }
+        volumeWrap.onclick = function (e) {
+            e.stopPropagation()
+        }
+        // Drag volume range
+        volumeRange.oninput = function (e) {
+            audio.volume = e.target.value / 100
+            volumeOutput.textContent = e.target.value
+            _this.setConfig('volume', e.target.value)
+        }
+        // #endregion Volume
+
+        // #region Options
         // Show option list 
         optionBtn.onclick = function (e) {
             optionList.style.display = !Boolean(optionList.style.display) ? 'block' : null
@@ -167,6 +198,9 @@ const app = {
                 emptyList.style.display = favoriteList.childElementCount > 0 ? 'none' : null
             }
         }
+        //#endregion Options
+
+        // #region Favorite songs
         // Xử lý bấm vào nút close và ra ngoài thì đóng favorite box
         favoriteModal.onclick = function (e) {
             if (e.target.classList.contains('favorite_songs-close') || e.target.classList.contains('favorite_songs-modal')) {
@@ -177,26 +211,9 @@ const app = {
             }
             emptyList.style.display = favoriteList.childElementCount > 0 ? 'none' : null
         }
-        // Bật tắt volume
-        volumeBtn.onclick = function () {
-            volumeWrap.style.display = !Boolean(volumeWrap.style.display) ? 'block' : null
-        }
-        volumeWrap.onclick = function (e) {
-            e.stopPropagation()
-        }
-        // Drag volume range
-        volumeRange.oninput = function (e) {
-            audio.volume = e.target.value / 100
-            volumeOutput.textContent = e.target.value
-            _this.setConfig('volume', e.target.value)
-        }
-        // Xử lý scale cd
-        document.onscroll = function () {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop
-            const newCdWidth = cdWidth - scrollTop
-            cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
-            cd.style.opacity = newCdWidth / cdWidth
-        }
+        //#endregion Favorite Songs
+
+        // #region Play button
         // Xử lý khi người dùng click vào play button
         playBtn.onclick = function () {
             if (_this.isplaying) {
@@ -213,6 +230,14 @@ const app = {
             player.classList.remove('playing')
             cdThumbAnimate.pause()
         }
+        audio.onended = function () {
+            if (_this.isRepeat) {
+                audio.play()
+            } else nextBtn.click()
+        }
+        // #endregion Play button
+
+        // #region Progress bar
         // Khi tiến độ bài hát thay đổi => thanh progress cũng thay đổi tương ứng
         audio.ontimeupdate = function () {
             if (audio.duration) {
@@ -228,8 +253,9 @@ const app = {
             const seekTime = audio.duration * e.target.value / 100
             audio.currentTime = seekTime
         }
-        // Kết thúc xử lý progress bar
+        // #endregion Progress bar
 
+        // #region Controllers: Next, Prev, Random, Repeat buttons
         nextBtn.onclick = function () {
             if (_this.isRandom) {
                 _this.playRandomSong()
@@ -241,12 +267,7 @@ const app = {
                 _this.playRandomSong()
             } else _this.prevsong()
         }
-        audio.onended = function () {
-            if (_this.isRepeat) {
-                audio.play()
-            } else nextBtn.click()
-        }
-
+        
         // Bật tắt nút random
         randomBtn.onclick = function () {
             _this.isRandom = !_this.isRandom
@@ -260,6 +281,9 @@ const app = {
             _this.setConfig('isRepeat', _this.isRepeat)
             repeatBtn.classList.toggle('active', _this.isRepeat)
         }
+        // #endregion Controllers
+
+        // #region Playlist : click on songs
         // CLick vào playlist
         playlist.onclick = function (e) {
             const songNode = e.target.closest('.song:not(.active)')
@@ -277,7 +301,9 @@ const app = {
                 _this.setConfig('likedListIndex', likedList)
             }
         }
+        // #endregion Playlist
     },
+
     // Xử lý danh sách bài hát yêu thích
     handleLikedList: function (favSongsIndex, unlikedParentNode) {
         // Duyệt mảng vị trí các bài hát đã bấm tim, nếu like thì thêm vào favorite box
@@ -319,51 +345,8 @@ const app = {
             })
         }, 300)
     },
-    loadCurrentSong: function () {
-        // Load Song Info
-        heading.textContent = this.currentSong.name
-        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
-        audio.src = this.currentSong.path
-        // Add active class to Current Song on playlist and Favorite
-        const activeSongs = $$('.song.active')
-        const currentActiveSongs = $$(`.song[data-index= "${this.currentIndex}"]`)
-        currentActiveSongs.forEach(activeSong => {
-            activeSong.classList.add('active')
-        })
-        activeSongs.forEach(activeSong => {
-            if (activeSong && activeSong.classList.contains('active')) {
-                activeSong.classList.remove('active')
-            }
-        });
 
-        // Lưu bài hát hiện tại vào localStorage
-        this.setConfig('currentSongIndex', this.currentIndex)
-        // scroll to current song
-        this.scrollToActiveSong()
-    },
-    loadConfig: function () {
-        this.isRandom = this.config.isRandom || false
-        this.isRepeat = this.config.isRepeat || false
-        randomBtn.classList.toggle('active', this.isRandom)
-        repeatBtn.classList.toggle('active', this.isRepeat)
-        this.currentIndex = this.config.currentSongIndex || 0
-        progress.value = this.config.songProgressValue || 0
-        audio.currentTime = this.config.songCurrentTime || 0
-        // Load theme
-        if (this.config.classDark) {
-            themeIcon.classList.toggle('fa-sun')
-            $('body').classList.toggle('dark')
-            themeText.textContent = themeIcon.classList.contains('fa-sun') ? 'Light mode' : 'Dark mode'
-        }
-        // Load volume
-        audio.volume = this.config.volume / 100 || 1
-        volumeRange.value = this.config.volume || 100
-        volumeOutput.textContent = this.config.volume || '100'
-        // Load likedList
-        if ('likedListIndex' in this.config && this.config.likedListIndex.length) {
-            this.handleLikedList(this.config.likedListIndex, true)
-        }
-    },
+    //#region Controllers: Next, Prev, Random
     nextsong: function () {
         this.currentIndex++
         if (this.currentIndex >= this.songs.length) { this.currentIndex = 0 }
@@ -397,6 +380,56 @@ const app = {
 
         randomFilter.push(this.currentIndex)
     },
+    //#endregion Controllers
+
+    // Load bài hát hiện tại
+    loadCurrentSong: function () {
+        // Load Song Info
+        heading.textContent = this.currentSong.name
+        cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`
+        audio.src = this.currentSong.path
+        // Add active class to Current Song on playlist and Favorite
+        const activeSongs = $$('.song.active')
+        const currentActiveSongs = $$(`.song[data-index= "${this.currentIndex}"]`)
+        currentActiveSongs.forEach(activeSong => {
+            activeSong.classList.add('active')
+        })
+        activeSongs.forEach(activeSong => {
+            if (activeSong && activeSong.classList.contains('active')) {
+                activeSong.classList.remove('active')
+            }
+        });
+
+        // Lưu bài hát hiện tại vào localStorage
+        this.setConfig('currentSongIndex', this.currentIndex)
+        // scroll to current song
+        this.scrollToActiveSong()
+    },
+    // Load cấu hình đã lưu mỗi khi reload trang
+    loadConfig: function () {
+        this.isRandom = this.config.isRandom || false
+        this.isRepeat = this.config.isRepeat || false
+        randomBtn.classList.toggle('active', this.isRandom)
+        repeatBtn.classList.toggle('active', this.isRepeat)
+        this.currentIndex = this.config.currentSongIndex || 0
+        progress.value = this.config.songProgressValue || 0
+        audio.currentTime = this.config.songCurrentTime || 0
+        // Load theme
+        if (this.config.classDark) {
+            themeIcon.classList.toggle('fa-sun')
+            $('body').classList.toggle('dark')
+            themeText.textContent = themeIcon.classList.contains('fa-sun') ? 'Light mode' : 'Dark mode'
+        }
+        // Load volume
+        audio.volume = this.config.volume / 100 || 1
+        volumeRange.value = this.config.volume || 100
+        volumeOutput.textContent = this.config.volume || '100'
+        // Load likedList
+        if ('likedListIndex' in this.config && this.config.likedListIndex.length) {
+            this.handleLikedList(this.config.likedListIndex, true)
+        }
+    },
+    
     start: function () {
         this.defineProperties()
         // xử lý các sự kiện (Dom Events)
