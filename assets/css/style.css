@@ -102,7 +102,11 @@ html {
   box-shadow: none;
 }
 .search-songs .title {
-  font-size: 14px !important; 
+  font-size: 12px !important; 
+}
+.favorite_songs .favorite,
+.search-songs .favorite {
+  font-size: 20px !important;
 }
 /* #endregion SEARCH  */
 
@@ -218,6 +222,7 @@ header h2 {
   overflow-y: auto;
 }
 .favorite_songs .song {
+  padding: 0 16px;
   box-shadow: none;
 }
 .favorite_songs-header {
@@ -343,7 +348,7 @@ header h2 {
 }
 
 .song .title {
-  font-size: 18px;
+  font-size: 14px;
   color: var(--text-color);
 }
 
@@ -355,7 +360,7 @@ header h2 {
 .song .favorite {
   padding: 16px 8px;
   color: #999;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .liked i {

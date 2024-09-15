@@ -296,7 +296,7 @@ const app = {
                 // Xử lý khi thả tim
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.parentNode.parentNode
-                _this.handleLikedList([favoriteSong.dataset.index], favoriteSong.parentNode)
+                _this.handleLikedList([favoriteSong.dataset.index])
                 _this.setConfig('likedListIndex', likedList)
             }
         }
@@ -304,7 +304,7 @@ const app = {
     },
 
     // Xử lý danh sách bài hát yêu thích
-    handleLikedList: function (favSongsIndex, unlikedParentNode) {
+    handleLikedList: function (favSongsIndex) {
         // Duyệt mảng vị trí các bài hát đã bấm tim, nếu like thì thêm vào favorite box
         // bỏ like thì xóa khỏi favorite box, áp dụng cho cả loadconfig 
         favSongsIndex.forEach(function (index) {
@@ -320,15 +320,7 @@ const app = {
                 likedList.push(index)
             } else {
                 let removeSong = $(`.favorite_songs .song[data-index="${index}"]`)
-                favoriteList.removeChild(removeSong)
-                likedList.splice(likedList.indexOf(index), 1)
-            }
-            // Xử lý khi bỏ tim từ favorite box -> bỏ tim bài hát ở playlist
-            // khi bỏ tim từ favorite box thì parentNode = undefined
-            if (!unlikedParentNode) {
-                favoriteSong = $(`.song[data-index="${index}"]`)
-                favoriteSong.querySelector('i').classList.remove('fas')
-                favoriteSong.classList.remove('liked')
+                removeSong.remove()
                 likedList.splice(likedList.indexOf(index), 1)
             }
         })
@@ -424,7 +416,7 @@ const app = {
         volumeOutput.textContent = this.config.volume || '100'
         // Load likedList
         if ('likedListIndex' in this.config && this.config.likedListIndex.length) {
-            this.handleLikedList(this.config.likedListIndex, true)
+            this.handleLikedList(this.config.likedListIndex)
         }
     },
     
