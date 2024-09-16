@@ -295,7 +295,7 @@ const app = {
             } else {
                 // Xử lý khi thả tim
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
-                let favoriteSong = favoriteIcon.parentNode.parentNode
+                let favoriteSong = favoriteIcon.closest('.song')
                 _this.handleLikedList([favoriteSong.dataset.index])
                 _this.setConfig('likedListIndex', likedList)
             }
