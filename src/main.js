@@ -187,7 +187,7 @@ const app = {
             if (e.target.closest('.theme-btn')) {
                 themeIcon.classList.toggle('fa-sun')
                 $('body').classList.toggle('dark')
-                themeText.textContent = themeIcon.classList.contains('fa-sun') ? 'Light mode' : 'Dark mode'
+                themeText.textContent = themeIcon.matches('.fa-sun') ? 'Light mode' : 'Dark mode'
                 _this.setConfig('classDark', $('body').className)
                 e.stopPropagation()
             } else {
@@ -202,7 +202,7 @@ const app = {
         // #region Favorite songs
         // Xử lý bấm vào nút close và ra ngoài thì đóng favorite box
         favoriteModal.onclick = function (e) {
-            if (e.target.classList.contains('favorite_songs-close') || e.target.classList.contains('favorite_songs-modal')) {
+            if (e.target.matches('.favorite_songs-close') || e.target.matches('.favorite_songs-modal')) {
                 favoriteModal.style.display = null
                 $('body').style.overflow = null
             } else {
@@ -293,7 +293,7 @@ const app = {
                 _this.loadCurrentSong()
                 audio.play()
             } else {
-                // Xử lý khi thả tim
+                // Xử lý khi thả tim hoặc bỏ tim
                 // Từ icon đã nhấn tim, trỏ tới Parent song của icon đó 
                 let favoriteSong = favoriteIcon.closest('.song')
                 _this.handleLikedList([favoriteSong.dataset.index])
@@ -315,7 +315,7 @@ const app = {
                 song.querySelector('i').classList.toggle('fas')
             })
             favoriteSong = favoriteSong[0]
-            if (favoriteSong.classList.contains('liked')) {
+            if (favoriteSong.matches('.liked')) {
                 favoriteList.appendChild(favoriteSong.cloneNode(true))
                 likedList.push(index)
             } else {
@@ -385,7 +385,7 @@ const app = {
             activeSong.classList.add('active')
         })
         activeSongs.forEach(activeSong => {
-            if (activeSong && activeSong.classList.contains('active')) {
+            if (activeSong && activeSong.matches('.active')) {
                 activeSong.classList.remove('active')
             }
         });
@@ -408,7 +408,7 @@ const app = {
         if (this.config.classDark) {
             themeIcon.classList.toggle('fa-sun')
             $('body').classList.toggle('dark')
-            themeText.textContent = themeIcon.classList.contains('fa-sun') ? 'Light mode' : 'Dark mode'
+            themeText.textContent = themeIcon.matches('.fa-sun') ? 'Light mode' : 'Dark mode'
         }
         // Load volume
         audio.volume = this.config.volume / 100 || 1
