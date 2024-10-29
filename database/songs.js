@@ -69,6 +69,34 @@ export default {
             path: "assets/music/DungLamTraiTimAnhDau.m4a",
             image:
                 "https://i.scdn.co/image/ab67616d00001e02a1bc26cdd8eecd89da3adc39"
-        }
+        },
+        {
+            name: "Tình đầu quá chén",
+            singer: "Quang Hùng MasterD - (ft. Negav, Erik, Pháp Kiều)",
+            path: "assets/music/TinhDauQuaChen.mp3",
+            image:
+                "https://i.ytimg.com/vi/UL1Hpz_-oJ0/mqdefault.jpg"
+        },
+        {
+            name: "Trói em lại",
+            singer: "Quang Hùng MasterD",
+            path: "assets/music/TroiEmLai.mp3",
+            image:
+                "https://i.ytimg.com/vi/IagewL4Btag/mqdefault.jpg"
+        },
+        {
+            name: "Catch Me If You Can",
+            singer: "Quang Hùng MasterD - (ft. Negav, Nicky, Công Dương)",
+            path: "assets/music/CatchMeIfYouCan.mp3",
+            image:
+                "https://i.ytimg.com/vi/CzXWhBjtRnU/mqdefault.jpg"
+        },
+        {
+            name: "Ngáo ngơ",
+            singer: "HIEUTHUHAI, Atus, Jsol, Erik ft. Orange",
+            path: "assets/music/NgaoNgo.mp3",
+            image:
+                "https://i.ytimg.com/vi/9X14DitMPIU/mqdefault.jpg"
+        },
     ]
 }
