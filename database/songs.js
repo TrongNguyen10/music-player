@@ -98,5 +98,12 @@ export default {
             image:
                 "https://i.ytimg.com/vi/9X14DitMPIU/mqdefault.jpg"
         },
+        {
+            name: "Thủy Triều",
+            singer: "Quang Hùng MasterD",
+            path: "assets/music/ThuyTrieu.mp3",
+            image:
+                "https://photo-resize-zmp3.zmdcdn.me/w600_r1x1_jpeg/cover/8/4/7/4/8474eb9fd1a3aa78b974b4c104ff45fc.jpg"
+        },
     ]
 }
